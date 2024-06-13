@@ -4,7 +4,7 @@ import { Button as ButtonComponent } from "../../Elements";
 
 const Navbar = ({ handleSidebar }) => {
   return (
-    <nav className="w-full fixed top-0 left-0 right-0 p-4 flex items-center justify-between gap-4  z-20">
+    <nav className="w-full fixed top-0 left-0 right-0 p-4 flex items-center justify-between gap-4  lg:z-20 z-30 lg:bg-transparent bg-white">
       <Image
         src={menu}
         width={32}

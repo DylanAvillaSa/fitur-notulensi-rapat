@@ -1,5 +1,5 @@
 const TableLayout = ({ children }) => {
-  return <table className=" w-full mt-10 rounded">{children}</table>;
+  return <table className="w-[2000px] mt-8 rounded pb-5">{children}</table>;
 };
 
 export default TableLayout;

@@ -170,8 +170,9 @@ const TablePrint = ({ printedRef, dataForPrint }) => {
     }, 500);
   }, [dataForPrint.tindak_lanjut]);
 
+
   return (
-    <section ref={printedRef} className="w-full">
+    <section ref={printedRef} className="w-full hidden print:block">
       <ul className=" flex-col flex px-5 py-3 font-medium">
         <h2>Logo Instansi</h2>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
@@ -200,7 +201,7 @@ const TablePrint = ({ printedRef, dataForPrint }) => {
 
           {/* data tindak lanjut */}
           <ul className="list-disc flex flex-col px-3 py-3">
-            <li>{dataForPrint?.data_tindak_lanjut}</li>
+            <li>{data_tindak_lanjut}</li>
           </ul>
         </div>
 
@@ -224,11 +225,9 @@ const TablePrint = ({ printedRef, dataForPrint }) => {
         {/* anggota rapat */}
         <ul className="flex flex-col list-disc  py-3">
           <h2 className="font-semibold mb-3">Anggota Rapat</h2>
-          {dataForPrint.anggota.map((data) => {
-            <li className="font-medium ml-5" key={data}>
-              {console.info(data)}
-            </li>;
-          })}
+          <li className="font-medium ml-5">
+            <p>helo</p>
+          </li>
         </ul>
       </section>
 
@@ -253,7 +252,6 @@ const UpdateNotulency = ({ params }) => {
   const { slug: id } = params;
   const printRef = useRef(null);
   const editorQ = useRef(null);
-  const [isPrint, setIsPrint] = useState(false);
   const [isZoom, setIsZoom] = useState(false);
   const [dataForPrint, setDataForPrint] = useState(null);
   const [showData, setShowData] = useState({});
@@ -286,8 +284,6 @@ const UpdateNotulency = ({ params }) => {
           reader.onload = (e) => {
             setImages(e.target.result);
           };
-        } else {
-          console.error("Objek yang diberikan bukanlah File atau Blob.");
         }
 
         setHistory([...history_data, specific_data]);
@@ -367,6 +363,9 @@ const UpdateNotulency = ({ params }) => {
             : history_data[history_data.length - 1].no + 1,
       },
     ]);
+
+    alert('data berhasil disimpan')
+    e.target.reset()
   };
 
   const handlePrint = useReactToPrint({
@@ -406,13 +405,17 @@ const UpdateNotulency = ({ params }) => {
           </h2>
 
           {/* print */}
-          <button
-            type="button"
-            className="bg-light-purple p-2 text-slate-50 rounded px-5"
-            onClick={handlePrint}
-          >
-            Print
-          </button>
+          {dataForPrint == null ? (
+            <div></div>
+          ) : (
+            <button
+              type="button"
+              className="bg-light-purple p-2 text-slate-50 rounded px-5"
+              onClick={handlePrint}
+            >
+              Print
+            </button>
+          )}
         </div>
 
         <form
@@ -516,6 +519,7 @@ const UpdateNotulency = ({ params }) => {
           <div className={`flex w-3/5 justify-between`}>
             {images && (
               <Image
+                alt="gambar"
                 src={images}
                 width={220}
                 style={{ borderRadius: "10px", cursor: "pointer" }}
@@ -526,7 +530,6 @@ const UpdateNotulency = ({ params }) => {
                     : "transition-all duration-700 ease-out rounded-lg"
                 }`}
                 onClick={() => setIsZoom(!isZoom)}
-                alt="gambar"
               />
             )}
           </div>

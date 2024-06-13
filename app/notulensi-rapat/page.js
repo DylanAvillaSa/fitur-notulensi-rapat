@@ -40,26 +40,32 @@ const NotulencyMeeting = () => {
     <PageContainer>
       <Wrapper>
         <Header />
-        <section className="w-full mt-10 px-2">
-          <div className="flex w-full justify-between">
-            <h2 className="text-xl font-bold">Data Notulensi Rapat</h2>
-            <ButtonComponent
-              variant="main-btn"
-              onClick={() => router.push(`/notulensi-rapat/tambah-notulensi`)}
-            >
-              Tambah Notulensi
-            </ButtonComponent>
-          </div>
+        <section className="w-full  px-2 overflow-x-scroll py-10 overflow-y-hidden relative">
+            <div className="flex w-full  justify-between sticky top-0 ">
+              <h2 className="text-xl font-bold">Data Notulensi Rapat</h2>
+              <ButtonComponent
+                variant="main-btn"
+                onClick={() => router.push(`/notulensi-rapat/tambah-notulensi`)}
+              >
+                Tambah Notulensi
+              </ButtonComponent>
+            </div>
 
           <TableLayout>
             <TableHead />
-            <TableBody handleDelete={handleDelete} handleEdit={handleEdit} paginatedData={paginatedData}/>
+            <TableBody
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              paginatedData={paginatedData}
+            />
           </TableLayout>
-
-          {/* pagination */}
-          <Pagination data={endpoint} itemPerPage={itemPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
-          
         </section>
+        <Pagination
+          data={endpoint}
+          itemPerPage={itemPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </Wrapper>
     </PageContainer>
   );

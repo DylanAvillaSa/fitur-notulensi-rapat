@@ -1,6 +1,6 @@
 const TableHead = () => {
   return (
-    <thead className="bg-slate-50 ">
+    <thead className="bg-slate-50">
       <tr>
         <th className="w-28 p-4 text-sm ">No</th>
         <th className="w-28 p-4 text-sm">Waktu</th>

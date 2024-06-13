@@ -7,7 +7,7 @@ const Aside = ({ isSidebar, pathName }) => {
     <aside
       className={` ${
         isSidebar &&
-        "transition-all duration-1000 lg:w-[260px]  min-h-screen fixed top-0 left-0 bg-white flex flex-col py-4 z-20 items-center justify-start border-[.5px]"
+        "transition-all duration-1000 lg:w-[260px] hidden  min-h-screen fixed top-0 left-0 bg-white lg:flex flex-col py-4 z-20 items-center justify-start border-[.5px]"
       } `}
     >
       <div className="flex items-center gap-3">
