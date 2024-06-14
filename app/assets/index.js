@@ -14,12 +14,14 @@ import add from "@/app/assets/icon/plus.png";
 import editBlack from "@/app/assets/icon/edit.png";
 import close from "@/app/assets/icon/close.png";
 import linkImg from "@/app/assets/icon/link.png";
+import printImg from "@/app/assets/icon/printer.png";
 
 export {
   profile,
   menu,
   logo,
   linkImg,
+  printImg,
   notulen,
   right,
   show,

@@ -8,8 +8,9 @@ import {
   deleted,
   close,
   linkImg,
+  printImg,
 } from "@/app/assets";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Fragment } from "react";
 import { Editor } from "primereact/editor";
 import { FileUpload } from "@/app/utils";
 import { Header } from "@/app/components/UI";
@@ -18,15 +19,14 @@ import Image from "next/image";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 
 const TableNotulency = ({
+  dataRiwayat,
   hystory,
   showData,
   setShowData,
   setIsShowData,
   updateDataNotulen,
 }) => {
-  const lastIndex = hystory.length - 1;
-  const dataHistory = JSON.parse(localStorage.getItem("history"));
-  console.info(dataHistory);
+  const lastIndex = dataRiwayat.length - 1;
 
   const handleEditData = (id) => {
     hystory.map((data) => {
@@ -60,9 +60,11 @@ const TableNotulency = ({
         </tr>
       </thead>
       <tbody>
-        {hystory.map((data) => (
-          <tr className="border-b-2 pb-2" key={data.no}>
-            <td className="w-24 p-3 text-center text-slate-600">{data.no}</td>
+        {dataRiwayat.map((data, i) => (
+          <tr className="border-b-2 pb-2" key={i}>
+            <td className="w-24 p-3 text-center text-slate-600">
+              {i === 0 ? 1 : i + 1}
+            </td>
             <td className="w-24 p-3 text-center text-slate-600">
               {data.waktu} / 10:00
             </td>
@@ -76,7 +78,7 @@ const TableNotulency = ({
               {data.pembahasan}
             </td>
             <td className="w-24 p-3 flex items-center justify-center mx-auto">
-              {hystory[lastIndex] == data ? (
+              {dataRiwayat[lastIndex] == data ? (
                 <Image
                   src={editBlack}
                   width={35}
@@ -112,64 +114,22 @@ const TitleNotulency = () => {
 };
 
 // menampilkan gambar
-const ShowPreviewImage = ({ images, setShowPreview }) => {
-  return (
-    <div className="w-2/6 h-[28.5rem] bg-slate-50 rounded-lg shadow-lg flex justify-center items-center text-black absolute">
-      {images ? (
-        <>
-          <Image
-            src={close}
-            width={30}
-            height={30}
-            alt="close"
-            className="absolute top-2 right-3 cursor-pointer"
-            onClick={() => setShowPreview(false)}
-          />
-          <div className="flex flex-col text-[1.05rem] items-center gap-2">
-            <Image
-              src={images}
-              width={530}
-              height={540}
-              className="rounded-md object-cover"
-              alt="unknown"
-            />
-            <p className="font-medium mt-2">Hasil Gambar</p>
-          </div>
-        </>
-      ) : (
-        <>
-          <Image
-            src={close}
-            width={30}
-            height={30}
-            alt="close"
-            className="absolute top-2 right-3 cursor-pointer"
-            onClick={() => setShowPreview(false)}
-          />
-          <p className="text-xl w-full text-center font-bold">
-            Gambar Tidak Ada!
-          </p>
-        </>
-      )}
-    </div>
-  );
-};
 
-const TablePrint = ({ printedRef, dataForPrint }) => {
+const TablePrint = ({ printedRef, dataRiwayat }) => {
   const [data_tindak_lanjut, setDataTindakLanjut] = useState("");
+  const lastIndexPrint = dataRiwayat[dataRiwayat.length - 1];
   useEffect(() => {
     setTimeout(() => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(
-        dataForPrint.tindak_lanjut,
+        lastIndexPrint.tindak_lanjut,
         "text/html"
       );
       const clean_text = doc.body.textContent.trim();
 
       setDataTindakLanjut(clean_text);
     }, 500);
-  }, [dataForPrint.tindak_lanjut]);
-
+  }, [dataRiwayat.tindak_lanjut]);
 
   return (
     <section ref={printedRef} className="w-full hidden print:block">
@@ -177,19 +137,19 @@ const TablePrint = ({ printedRef, dataForPrint }) => {
         <h2>Logo Instansi</h2>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
           <span>Pembahasan Masalah : </span>
-          <p>{dataForPrint.pembahasan}</p>
+          <p>{lastIndexPrint.pembahasan}</p>
         </li>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
           <span>Unit / Divisi : </span>
-          <p>{dataForPrint.divisi}</p>
+          <p>{lastIndexPrint.divisi}</p>
         </li>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
           <span>Waktu : </span>
-          <p>{dataForPrint.waktu}</p>
+          <p>{lastIndexPrint.waktu}</p>
         </li>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
           <span>Tempat : </span>
-          <p>{dataForPrint.lokasi}</p>
+          <p>{lastIndexPrint.lokasi}</p>
         </li>
       </ul>
 
@@ -219,15 +179,19 @@ const TablePrint = ({ printedRef, dataForPrint }) => {
       <section className="flex flex-col px-5 py-4">
         <p className="flex gap-3 font-medium">
           Pimpinan Rapat :{" "}
-          <span className="font-bold">{dataForPrint.pimpinan}</span>
+          <span className="font-bold">{lastIndexPrint.pimpinan}</span>
         </p>
 
         {/* anggota rapat */}
         <ul className="flex flex-col list-disc  py-3">
           <h2 className="font-semibold mb-3">Anggota Rapat</h2>
-          <li className="font-medium ml-5">
-            <p>helo</p>
-          </li>
+          {lastIndexPrint.anggota.map((anggota, i) => (
+            <Fragment key={i}>
+              <li key={anggota} className="font-medium ml-5">
+                {anggota}
+              </li>
+            </Fragment>
+          ))}
         </ul>
       </section>
 
@@ -256,10 +220,11 @@ const UpdateNotulency = ({ params }) => {
   const [dataForPrint, setDataForPrint] = useState(null);
   const [showData, setShowData] = useState({});
   const [isShowData, setIsShowData] = useState(false);
+  const dataRiwayat = useFormDataStore((state) => state.history);
+  const editDataRiwayat = useFormDataStore((state) => state.dataHistory);
   const dataNotulen = useFormDataStore((state) => state.data);
   const updateDataNotulen = useFormDataStore((state) => state.editData);
   const [history_data, setHistory] = useState([]);
-  const [showPreview, setShowPreview] = useState(false);
   const [formEdit, setFormEdit] = useState({
     waktu: "",
     lokasi: "",
@@ -317,10 +282,6 @@ const UpdateNotulency = ({ params }) => {
     setNewNotulen(newNotulen.filter((deletePerson) => deletePerson.id !== id));
   };
 
-  const handleShowImage = () => {
-    setShowPreview(!showPreview);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormEdit((prev) => ({ ...prev, [name]: value, gambar: pict }));
@@ -352,6 +313,7 @@ const UpdateNotulency = ({ params }) => {
 
     setDataForPrint(newData);
     updateDataNotulen(newData);
+    editDataRiwayat(newData);
 
     setHistory([
       ...history_data,
@@ -364,9 +326,13 @@ const UpdateNotulency = ({ params }) => {
       },
     ]);
 
-    alert('data berhasil disimpan')
-    e.target.reset()
+    alert("data berhasil disimpan");
+    e.target.reset();
   };
+
+  useEffect(() => {
+    localStorage.setItem("data-history", JSON.stringify(dataRiwayat));
+  }, [dataRiwayat]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
@@ -383,18 +349,20 @@ const UpdateNotulency = ({ params }) => {
           printRef={printRef}
           showData={showData}
           updateDataNotulen={updateDataNotulen}
+          dataRiwayat={dataRiwayat}
           setShowData={setShowData}
           setIsShowData={setIsShowData}
         />
 
-        {dataForPrint === null ? (
-          <div></div>
-        ) : (
+        {dataRiwayat[dataRiwayat.length - 1] ? (
           <TablePrint
             printedRef={printRef}
             showData={showData}
+            dataRiwayat={dataRiwayat}
             dataForPrint={dataForPrint}
           />
+        ) : (
+          <div></div>
         )}
       </div>
 
@@ -405,7 +373,7 @@ const UpdateNotulency = ({ params }) => {
           </h2>
 
           {/* print */}
-          {dataForPrint == null ? (
+          {!dataRiwayat ? (
             <div></div>
           ) : (
             <button
@@ -413,7 +381,7 @@ const UpdateNotulency = ({ params }) => {
               className="bg-light-purple p-2 text-slate-50 rounded px-5"
               onClick={handlePrint}
             >
-              Print
+              <Image src={printImg} width={20} height={20} alt="print" />
             </button>
           )}
         </div>
@@ -506,15 +474,6 @@ const UpdateNotulency = ({ params }) => {
             />
           </label>
 
-          {/* upload */}
-          <p className="text-slate-700 font-semibold flex w-3/5 justify-between items-end ">
-            {isShowData && (
-              <span onClick={handleShowImage} className="cursor-pointer">
-                lihat gambar
-              </span>
-            )}
-          </p>
-
           {/* tampilan gambar */}
           <div className={`flex w-3/5 justify-between`}>
             {images && (
@@ -534,10 +493,6 @@ const UpdateNotulency = ({ params }) => {
             )}
           </div>
 
-          {/* menampilkan gambar dengan klik lihat gambar */}
-          {showPreview && (
-            <ShowPreviewImage images={images} setShowPreview={setShowPreview} />
-          )}
           <label className="w-3/5">
             <FileUpload setPict={setPict} width="full" />
           </label>
