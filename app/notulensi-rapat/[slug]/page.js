@@ -313,7 +313,14 @@ const UpdateNotulency = ({ params }) => {
 
     setDataForPrint(newData);
     updateDataNotulen(newData);
-    editDataRiwayat(newData);
+
+    dataNotulen.map((data) => {
+      if (data.no == id) {
+        editDataRiwayat(newData);
+      } else {
+        editDataRiwayat(dataNotulen);
+      }
+    });
 
     setHistory([
       ...history_data,

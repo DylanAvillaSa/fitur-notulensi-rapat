@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Untuk browser WebKit seperti Chrome dan Safari */
 ::-webkit-scrollbar {
   width: 5px;
@@ -10,7 +9,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color:#6d8de7; /* Warna thumb (bagian yang dapat digerakkan) */
+  background-color: #5a5e72; /* Warna thumb (bagian yang dapat digerakkan) */
   border-radius: 4px; /* Border radius thumb */
 }
 
@@ -20,20 +19,18 @@
 
 /* Untuk browser selain WebKit seperti Firefox */
 
-
- .scrollbar-thumb {
+.scrollbar-thumb {
   background-color: #4a5568;
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
-} 
+}
 
 .scrollbar-track {
   background-color: #cbd5e0; /* Warna track (bagian yang tidak dapat digerakkan) */
 }
-
 
 @layer components {
   .label {

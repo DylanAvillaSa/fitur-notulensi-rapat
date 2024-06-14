@@ -39,8 +39,8 @@ const NotulencyMeeting = () => {
       <Wrapper>
         <Header />
 
-        <section className="w-full  px-2 overflow-x-scroll py-10 overflow-y-hidden relative">
-          <div className="flex w-full  justify-between sticky top-0 ">
+        <section className="xl:w-full lg:w-5/6 w-full  px-2 overflow-x-scroll py-10 overflow-y-hidden relative">
+          <div className="flex w-full  justify-between sticky left-[0.1rem] ">
             <h2 className="text-xl font-bold">Data Notulensi Rapat</h2>
             <ButtonComponent
               variant="main-btn"
