@@ -37,7 +37,7 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
               {!data.status && (
                 <>
                   {statusJadwal() < data.deadline && (
-                    <p className="bg-slate-50 text-slate-700 w-24 py-2 mx-auto rounded-md">
+                    <p className="bg-slate-100 text-slate-700 w-24 py-2 mx-auto rounded-md">
                       On Process
                     </p>
                   )}
