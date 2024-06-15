@@ -457,7 +457,7 @@ const UpdateNotulency = ({ params }) => {
               <Editor
                 value={text}
                 style={{ height: "200px", pointerEvents: "none" }}
-                className="mt-2 opacity-75"
+                className="mt-2 opacity-75 bg-btn-disabled"
               />
             </label>
 
@@ -500,7 +500,7 @@ const UpdateNotulency = ({ params }) => {
               )}
             </div>
 
-            <label className="w-3/5">
+            <label className="w-3/5 ">
               <FileUpload setPict={setPict} disabled={true} width="full" />
             </label>
 

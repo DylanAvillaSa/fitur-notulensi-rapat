@@ -11,40 +11,47 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
       {data.length > 0 ? (
         paginatedData().map((data) => (
           <tr key={data?.no} className="border-b">
-            <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.no}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.waktu}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.lokasi}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.divisi}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.pembahasan}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-32 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {parse(data.tindak_lanjut || "")}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               1 Juni 2024
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-32 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.anggota?.map((anggota) => (
                 <p key={anggota != undefined && anggota}>
                   {anggota != undefined && anggota}
                 </p>
               ))}
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-32 text-sm text-center">
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               <p>Pimpinan : {data.pimpinan}</p>
               <p>Notulen : {data.notulen}</p>
             </td>
-            <td className="pt-2 border-b-2 pb-4 w-32 text-sm text-center">
-              <div className="flex justify-center items-center gap-1">
+
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
+              <p className="bg-orange-500 w-[80px] mx-auto py-1 px-[2px] text-[13px] font-bold  rounded text-white">
+                on process
+              </p>
+            </td>
+
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
+              <div className="flex justify-center items-center ">
                 {/* edit */}
                 <Button variant="edit" onClick={() => handleEdit(data)}>
                   <Image src={edit} width={20} height={20} alt="edit" />
@@ -59,9 +66,9 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
           </tr>
         ))
       ) : (
-        <tr>
-          <td className="font-semibold opacity-50 p-2">Data Belum Ditemukan!</td>
-        </tr>
+        <td className="font-semibold opacity-50 p-2 w-28">
+          Data Belum Ditemukan!
+        </td>
       )}
     </tbody>
   );

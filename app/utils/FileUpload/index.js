@@ -29,7 +29,7 @@ const FileUpload = ({ setPict, width, disabled }) => {
         width == "full" && "w-full"
       }
 
-      ${disabled && 'pointer-events-none'}
+      ${disabled && 'pointer-events-none bg-btn-disabled'}
       `}
     >
       <input {...getInputProps} disabled={disabled} className="outline-none border-none" type="hidden"/>

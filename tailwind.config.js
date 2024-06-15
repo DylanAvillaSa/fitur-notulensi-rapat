@@ -13,6 +13,7 @@ module.exports = {
         "btn-show": "#a855f7",
         "btn-edit": "#0ea5e9",
         "btn-del": "#ef4444",
+        "btn-disabled": "rgba(250,250,250,255)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

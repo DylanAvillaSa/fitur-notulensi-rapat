@@ -18,9 +18,9 @@ const Button = ({
       } 
       ${variant == "show" && "p-3 bg-btn-show rounded-md"}
       
-      ${variant == "edit" && "p-3 bg-btn-edit rounded-md"}
+      ${variant == "edit" && "p-3 bg-btn-edit rounded-l-md"}
 
-      ${variant == "delete" && "p-3 bg-btn-del rounded-md"}
+      ${variant == "delete" && "p-3 bg-btn-del rounded-r-md"}
       
       ${variant == "primary" && "p-3 bg-light-purple rounded-md text-white"}
       
