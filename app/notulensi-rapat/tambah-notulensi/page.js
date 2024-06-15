@@ -68,6 +68,7 @@ const AddNotulency = () => {
       gambar: pict,
       pembahasan: e.target.pembahasan.value,
       tindak_lanjut: text,
+      deadline: e.target.deadline.value,
       link: e.target.link.value,
       pimpinan: e.target.pimpinan_notulen.value,
       notulen: e.target.notulen.value,
@@ -163,6 +164,17 @@ const AddNotulency = () => {
             type="url"
             id="link"
             name="link"
+            className="p-2 border rounded w-[40%]"
+          />
+        </Label>
+
+        {/* deadline */}
+        <Label htmlFor="deadline" className="label">
+          <SpanTitle title="Deadline" />
+          <input
+            type="date"
+            id="deadline"
+            name="deadline"
             className="p-2 border rounded w-[40%]"
           />
         </Label>

@@ -1,11 +1,28 @@
+'use client'
+
 import Button from "../Button";
 import Image from "next/image";
 import { edit, deleted } from "@/app/assets";
 import parse from "html-react-parser";
 import { useFormDataStore } from "@/app/zustand/store";
+import { useEffect, useState } from "react";
 
 const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
   const data = useFormDataStore((state) => state.data);
+
+  const statusJadwal = (deadline) => {
+      const nowDay = new Date()
+    
+      const splitArr =nowDay.toLocaleDateString().split('/').reverse().join('-')
+      const time = splitArr.split('-')
+      const [year, month, day] = time
+
+      return year + '-' + (day < 10 ? '0' + day : day) +'-' + month
+
+
+      
+  }
+
   return (
     <tbody className="relative">
       {data.length > 0 ? (
@@ -18,19 +35,38 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
               {data.waktu}
             </td>
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
-              {data.lokasi}
+              {data.deadline}
             </td>
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
-              {data.divisi}
+              {statusJadwal(data.deadline) === 'orange' && (
+                <p className="bg-orange-400 w-24 py-1 rounded-sm text-white">
+                  On Process
+                </p>
+              )}
+
+              {
+              statusJadwal(data.deadline) < data.deadline && <p className="bg-slate-50 text-slate-700 w-24 py-2 rounded-md">On Process</p>
+              }
+              {
+              statusJadwal(data.deadline) == data.deadline && <p className="bg-orange-400 text-slate-100 w-24 py-2 rounded-md">On Process</p>
+              }
+              {
+              statusJadwal(data.deadline) > data.deadline && <p className="bg-rose-400 text-slate-100 w-24 py-2 rounded-md">On Overdue</p>
+              }
+
             </td>
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.pembahasan}
             </td>
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
-              {parse(data.tindak_lanjut || "")}
+              {data.lokasi}
+            </td>
+
+            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
+              {data.divisi}
             </td>
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
-              1 Juni 2024
+              {parse(data.tindak_lanjut || "")}
             </td>
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               {data.anggota?.map((anggota) => (
@@ -42,12 +78,6 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
               <p>Pimpinan : {data.pimpinan}</p>
               <p>Notulen : {data.notulen}</p>
-            </td>
-
-            <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
-              <p className="bg-orange-500 w-[80px] mx-auto py-1 px-[2px] text-[13px] font-bold  rounded text-white">
-                on process
-              </p>
             </td>
 
             <td className="pt-2 border-b-2 pb-3 w-24 text-sm text-center">
@@ -66,9 +96,11 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
           </tr>
         ))
       ) : (
-        <td className="font-semibold opacity-50 p-2 w-28">
-          Data Belum Ditemukan!
-        </td>
+        <tr>
+          <td className="font-semibold opacity-50 p-2 w-28">
+            Data Belum Ditemukan!
+          </td>
+        </tr>
       )}
     </tbody>
   );
