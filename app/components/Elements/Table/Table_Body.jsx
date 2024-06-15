@@ -1,6 +1,6 @@
 import Button from "../Button";
 import Image from "next/image";
-import { show, edit, deleted } from "@/app/assets";
+import { edit, deleted } from "@/app/assets";
 import parse from "html-react-parser";
 import { useFormDataStore } from "@/app/zustand/store";
 
@@ -47,7 +47,7 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
               <div className="flex justify-center items-center gap-1">
                 {/* edit */}
                 <Button variant="edit" onClick={() => handleEdit(data)}>
-                  <Image src={edit} width={20} height={20} alt="show" />
+                  <Image src={edit} width={20} height={20} alt="edit" />
                 </Button>
 
                 {/* delete */}

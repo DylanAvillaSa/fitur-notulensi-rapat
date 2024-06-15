@@ -19,24 +19,27 @@ import Image from "next/image";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 
 const TableNotulency = ({
+  formEdit,
+  id,
   dataRiwayat,
-  hystory,
   showData,
   setShowData,
   setIsShowData,
   updateDataNotulen,
 }) => {
   const lastIndex = dataRiwayat.length - 1;
+ 
+
 
   const handleEditData = (id) => {
-    hystory.map((data) => {
+    dataRiwayat.map((data) => {
       if (data.no === id) {
         setIsShowData(false);
       }
     });
   };
   const handleShowData = (id) => {
-    hystory.map((data) => {
+    dataRiwayat.map((data) => {
       if (data.no === id) {
         setShowData(data);
         setIsShowData(true);
@@ -60,48 +63,53 @@ const TableNotulency = ({
         </tr>
       </thead>
       <tbody>
-        {console.info(hystory)}
-        {dataRiwayat &&
-          hystory.map((data, i) => (
-            <tr className="border-b-2 pb-2" key={i}>
-              <td className="w-24 p-3 text-center text-slate-600">
-                {i === 0 ? 1 : i + 1}
-              </td>
-              <td className="w-24 p-3 text-center text-slate-600">
-                {data.waktu} / 10:00
-              </td>
-              <td className="w-24 p-3 text-center text-slate-600">
-                {data.lokasi}
-              </td>
-              <td className="w-24 p-3 text-center text-slate-600">
-                {data.divisi}
-              </td>
-              <td className="w-24 p-3 text-center text-slate-600">
-                {data.pembahasan}
-              </td>
-              <td className="w-24 p-3 flex items-center justify-center mx-auto">
-                {hystory[lastIndex] == data ? (
-                  <Image
-                    src={editBlack}
-                    width={35}
-                    height={35}
-                    alt="show"
-                    className="cursor-pointer"
-                    onClick={() => handleEditData(data.no)}
-                  />
-                ) : (
-                  <Image
-                    src={showBlack}
-                    width={35}
-                    height={35}
-                    alt="show"
-                    className="cursor-pointer"
-                    onClick={() => handleShowData(data.no)}
-                  />
-                )}
-              </td>
-            </tr>
-          ))}
+        {dataRiwayat.map((data, i) => {
+         if(formEdit.no == data.no) {
+            return (
+              <tr className="border-b-2 pb-2" key={i}>
+                <td className="w-24 p-3 text-center text-slate-600">
+                  {i === 0 ? 1 : i + 1}
+                </td>
+                {console.info("true")}
+                <td className="w-24 p-3 text-center text-slate-600">
+                  {data.waktu} / 10:00
+                </td>
+                <td className="w-24 p-3 text-center text-slate-600">
+                  {data.lokasi}
+                </td>
+                <td className="w-24 p-3 text-center text-slate-600">
+                  {data.divisi}
+                </td>
+                <td className="w-24 p-3 text-center text-slate-600">
+                  {data.pembahasan}
+                </td>
+                <td className="w-24 p-3 flex items-center justify-center mx-auto">
+                  {dataRiwayat[lastIndex] == data ? (
+                    <Image
+                      src={editBlack}
+                      width={35}
+                      height={35}
+                      alt="show"
+                      className="cursor-pointer"
+                      onClick={() => handleEditData(data.no)}
+                    />
+                  ) : (
+                    <Image
+                      src={showBlack}
+                      width={35}
+                      height={35}
+                      alt="show"
+                      className="cursor-pointer"
+                      onClick={() => handleShowData(data.no)}
+                    />
+                  )}
+                </td>
+              </tr>
+            );
+         } else {
+          return []
+         }
+        })}
       </tbody>
     </table>
   );
@@ -226,7 +234,6 @@ const UpdateNotulency = ({ params }) => {
   const editDataRiwayat = useFormDataStore((state) => state.dataHistory);
   const dataNotulen = useFormDataStore((state) => state.data);
   const updateDataNotulen = useFormDataStore((state) => state.editData);
-  const [history_data, setHistory] = useState([]);
   const [formEdit, setFormEdit] = useState({
     waktu: "",
     lokasi: "",
@@ -253,7 +260,6 @@ const UpdateNotulency = ({ params }) => {
           };
         }
 
-        setHistory([...history_data, specific_data]);
         setFormEdit(specific_data);
 
         setTimeout(() => {
@@ -317,17 +323,6 @@ const UpdateNotulency = ({ params }) => {
     updateDataNotulen(newData);
     editDataRiwayat(newData);
 
-    setHistory([
-      ...history_data,
-      {
-        ...formEdit,
-        no:
-          history_data.length === 0
-            ? 1
-            : history_data[history_data.length - 1].no + 1,
-      },
-    ]);
-
     alert("data berhasil disimpan");
     e.target.reset();
   };
@@ -347,9 +342,10 @@ const UpdateNotulency = ({ params }) => {
       <div className="xl:w-full flex flex-col  items-center rounded-lg py-5 px-3">
         <TitleNotulency />
         <TableNotulency
-          hystory={history_data}
           printRef={printRef}
           showData={showData}
+          id={id}
+          formEdit={formEdit}
           updateDataNotulen={updateDataNotulen}
           dataRiwayat={dataRiwayat}
           setShowData={setShowData}
