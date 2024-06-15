@@ -66,6 +66,7 @@ const AddNotulency = () => {
       lokasi: e.target.lokasi.value,
       divisi: e.target.divisi.value,
       gambar: pict,
+      status: false,
       pembahasan: e.target.pembahasan.value,
       tindak_lanjut: text,
       deadline: e.target.deadline.value,

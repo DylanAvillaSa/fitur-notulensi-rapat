@@ -239,12 +239,15 @@ const UpdateNotulency = ({ params }) => {
   const editDataRiwayat = useFormDataStore((state) => state.dataHistory);
   const dataNotulen = useFormDataStore((state) => state.data);
   const updateDataNotulen = useFormDataStore((state) => state.editData);
+  const [isDone, setIsDone] = useState(false)
   const [formEdit, setFormEdit] = useState({
     waktu: "",
     lokasi: "",
     divisi: "",
     pembahasan: "",
     link: "",
+    pimpinan: "",
+    notulen: "",
     anggota: "",
     gambar: "",
   });
@@ -326,6 +329,7 @@ const UpdateNotulency = ({ params }) => {
       ...formEdit,
       gambar: pict,
       tindak_lanjut: text,
+      status: isDone,
       anggota: [formEdit.anggota, ...datas],
     };
 
@@ -344,6 +348,21 @@ const UpdateNotulency = ({ params }) => {
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
   });
+
+
+  const statusJadwal = () => {
+    const nowDay = new Date()
+  
+    const splitArr =nowDay.toLocaleDateString().split('/').reverse().join('-')
+    const time = splitArr.split('-')
+    const [year, month, day] = time
+
+    return year + '-' + (day < 10 ? '0' + day : day) +'-' + month
+}
+
+  const handleStatus = () => {
+    setIsDone(true)
+  }
 
   return (
     <section className="xl:container lg:w-4/5   lg:ml-[240px] mt-24 text-black py-5 px-10 flex flex-col  items-center  justify-center">
@@ -706,6 +725,53 @@ const UpdateNotulency = ({ params }) => {
                 onChange={handleChange}
                 disabled={isShowData}
               />
+            </label>
+
+            {/* Deadline */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Deadline</p>
+              <input
+                type="date"
+                name="deadline"
+                value={isShowData ? showData.deadline : formEdit.deadline}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* status */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Status Deadline</p>
+              <ul className="flex items-center justify-center relative">
+                {
+                  isDone ? <p className="absolute -top-6 left-1/2 -translate-x-2/3">Rapat selesai</p> : null 
+                }
+                {statusJadwal() == formEdit.deadline && (
+                  <li className="px-3 py-3 rounded-l-md bg-orange-400 mt-2 w-1/2 text-white  text-center text-sm">
+                    Akhir deadline
+                  </li>
+                )}
+
+                {statusJadwal() < formEdit.deadline && (
+                  <li className="px-3 py-3 rounded-l-md bg-slate-100 mt-2 w-1/2 text-slate-600  text-center text-sm">
+                    Dalam proses
+                  </li>
+                )}
+
+                {statusJadwal() > formEdit.deadline && (
+                  <li className="px-3 py-3 rounded-l-md bg-rose-500 mt-2 w-1/2 text-white  text-center text-sm">
+                    Sudah melewati deadline!
+                  </li>
+                )}
+
+                <li
+                  className="bg-light-purple text-sm py-3 px-3 rounded-r-md cursor-pointer text-white relative top-1"
+                  onClick={handleStatus}
+                >
+                  Selesai
+                </li>
+              </ul>
             </label>
 
             {/* anggota rapat */}

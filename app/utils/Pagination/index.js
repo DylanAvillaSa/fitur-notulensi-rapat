@@ -13,7 +13,7 @@ const Pagination = ({data, itemPerPage, currentPage, setCurrentPage}) => {
         <span
           key={i}
           className={`cursor-pointer w-[40px] h-[40px] flex mx-1 justify-center items-center
-           ${i === currentPage ? 'bg-cyan-100 rounded-full' : 'rounded-full hover:bg-slate-100'} `}
+           ${i === currentPage ? 'bg-slate-100 rounded-full text-light-purple' : 'rounded-full hover:bg-slate-100'} `}
           onClick={() => handleChangePage(i)}
         >
           {i}

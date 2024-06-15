@@ -15,8 +15,10 @@ import editBlack from "@/app/assets/icon/edit.png";
 import close from "@/app/assets/icon/close.png";
 import linkImg from "@/app/assets/icon/link.png";
 import printImg from "@/app/assets/icon/printer.png";
+import info from "@/app/assets/icon/info.png";
 
 export {
+  info,
   profile,
   menu,
   logo,
