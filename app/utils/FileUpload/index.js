@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const FileUpload = ({ setPict, width }) => {
+const FileUpload = ({ setPict, width, disabled }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [notFormat, setNotFormat] = useState(false);
   const typeFiles = [".png", ".jpg"];
@@ -27,9 +27,12 @@ const FileUpload = ({ setPict, width }) => {
       {...getRootProps()}
       className={`border w-[45%] p-5 flex flex-col rounded-md items-center gap-2 ${
         width == "full" && "w-full"
-      }`}
+      }
+
+      ${disabled && 'pointer-events-none'}
+      `}
     >
-      <input {...getInputProps} />
+      <input {...getInputProps} disabled={disabled} className="outline-none border-none" type="hidden"/>
       <p>Drag and drop files, paste screenshots, or browse</p>
       <p className="p-2 bg-slate-100 w-[80px] rounded cursor-pointer">Browse</p>
       <ul>

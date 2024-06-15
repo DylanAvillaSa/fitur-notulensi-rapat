@@ -4,9 +4,9 @@ import { useFormDataStore } from "@/app/zustand/store";
 import {
   showBlack,
   editBlack,
+  logo,
   add,
   deleted,
-  close,
   linkImg,
   printImg,
 } from "@/app/assets";
@@ -20,7 +20,6 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 
 const TableNotulency = ({
   formEdit,
-  id,
   dataRiwayat,
   showData,
   setShowData,
@@ -64,7 +63,7 @@ const TableNotulency = ({
       </thead>
       <tbody>
         {dataRiwayat.map((data, i) => {
-         if(formEdit.no == data.no) {
+          if (formEdit.no == data.no) {
             return (
               <tr className="border-b-2 pb-2" key={i}>
                 <td className="w-24 p-3 text-center text-slate-600">
@@ -106,9 +105,9 @@ const TableNotulency = ({
                 </td>
               </tr>
             );
-         } else {
-          return []
-         }
+          } else {
+            return [];
+          }
         })}
       </tbody>
     </table>
@@ -144,22 +143,28 @@ const TablePrint = ({ printedRef, dataRiwayat }) => {
   return (
     <section ref={printedRef} className="w-full hidden print:block">
       <ul className=" flex-col flex px-5 py-3 font-medium">
-        <h2>Logo Instansi</h2>
+        <Image
+          src={logo}
+          width={100}
+          height={100}
+          className="rounded-full mx-auto"
+          alt="logo"
+        />
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
-          <span>Pembahasan Masalah : </span>
-          <p>{lastIndexPrint.pembahasan}</p>
+          <span className="text-[12px]">Pembahasan Masalah : </span>
+          <p className="text-[12px]">{lastIndexPrint.pembahasan}</p>
         </li>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
-          <span>Unit / Divisi : </span>
-          <p>{lastIndexPrint.divisi}</p>
+          <span className="text-[12px]">Unit / Divisi : </span>
+          <p className="text-[12px]">{lastIndexPrint.divisi}</p>
         </li>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
-          <span>Waktu : </span>
-          <p>{lastIndexPrint.waktu}</p>
+          <span className="text-[12px]">Waktu : </span>
+          <p className="text-[12px]">{lastIndexPrint.waktu}</p>
         </li>
         <li className="flex gap-2 border-b pb-2 pt-4 border-black">
-          <span>Tempat : </span>
-          <p>{lastIndexPrint.lokasi}</p>
+          <span className="text-[12px]">Tempat : </span>
+          <p className="text-[12px]">{lastIndexPrint.lokasi}</p>
         </li>
       </ul>
 
@@ -177,7 +182,7 @@ const TablePrint = ({ printedRef, dataRiwayat }) => {
 
         <div className="border border-black px-4 w-1/2">
           <h2 className="font-medium text-center mt-2">Deadline</h2>
-          <hr className="h-[2px] bg-slate-800 mb-5 rounded-full mt-2 " />
+          <hr className="h-[.5px] bg-slate-800 mb-5 rounded-full mt-2 " />
 
           {/* data deadline */}
           <ul className="list-disc flex flex-col px-3 py-3">
@@ -277,6 +282,8 @@ const UpdateNotulency = ({ params }) => {
   }, [id]);
 
   const handleAddPerson = () => {
+    if (isShowData) return false;
+
     setNewNotulen([
       ...newNotulen,
       {
@@ -297,6 +304,9 @@ const UpdateNotulency = ({ params }) => {
 
   const handleSubmitUpdate = (e) => {
     e.preventDefault();
+
+    if (isShowData) return false;
+
     const datas = [];
 
     [e.target.anggota_baru].filter((data) => {
@@ -345,6 +355,7 @@ const UpdateNotulency = ({ params }) => {
           printRef={printRef}
           showData={showData}
           id={id}
+          isShowData={isShowData}
           formEdit={formEdit}
           updateDataNotulen={updateDataNotulen}
           dataRiwayat={dataRiwayat}
@@ -384,160 +395,363 @@ const UpdateNotulency = ({ params }) => {
           )}
         </div>
 
-        <form
-          className="mt-7 w-full flex justify-between gap-5 flex-col h-[37.5rem] px-7 rounded-lg shadow-lg py-7 overflow-y-scroll  items-center"
-          onSubmit={handleSubmitUpdate}
-        >
-          <label className="w-3/5">
-            <p className="text-slate-700 font-semibold">Waktu</p>
-            <input
-              type="date"
-              name="waktu"
-              value={isShowData ? showData.waktu : formEdit.waktu}
-              className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
-              onChange={handleChange}
-              disabled={isShowData}
-            />
-          </label>
-
-          {/* lokasi */}
-          <label className="w-3/5">
-            <p className="text-slate-700 font-semibold">Lokasi</p>
-            <input
-              type="text"
-              name="lokasi"
-              value={isShowData ? showData.lokasi : formEdit.lokasi}
-              className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
-              onChange={handleChange}
-              disabled={isShowData}
-            />
-          </label>
-
-          {/* unit divisi */}
-          <label className="w-3/5">
-            <p className="text-slate-700 font-semibold">Unit / Divisi</p>
-            <input
-              type="text"
-              name="divisi"
-              value={isShowData ? showData.divisi : formEdit.divisi}
-              className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
-              onChange={handleChange}
-              disabled
-            />
-          </label>
-
-          {/* pembahasan masalah */}
-          <label className="w-3/5">
-            <p className="text-slate-700 font-semibold">Pembahasan Masalah</p>
-            <input
-              type="text"
-              name="pembahasan"
-              value={isShowData ? showData.pembahasan : formEdit.pembahasan}
-              className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
-              onChange={handleChange}
-              disabled
-            />
-          </label>
-
-          {/* editor */}
-          <label className="w-3/5">
-            <p className="text-slate-700 font-semibold">Tindak Lanjut</p>
-            <Editor
-              ref={editorQ}
-              value={text}
-              onTextChange={(e) => setText(e.htmlValue)}
-              style={{ height: "200px" }}
-              className="mt-2"
-              disabled={isShowData}
-            />
-          </label>
-
-          {/* link / url */}
-          <label className="w-3/5 relative">
-            <p className="text-slate-700 font-semibold">Link / URL</p>
-            <input
-              type="url"
-              name="link"
-              value={isShowData ? showData.link : formEdit.link}
-              className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
-              onChange={handleChange}
-              disabled={isShowData}
-            />
-            <Image
-              src={linkImg}
-              width={20}
-              height={20}
-              className="absolute right-3 top-10 cursor-pointer"
-              onClick={() => window.open(`${formEdit.link}`, "blank")}
-            />
-          </label>
-
-          {/* tampilan gambar */}
-          <div className={`flex w-3/5 justify-between`}>
-            {images && (
-              <Image
-                alt="gambar"
-                src={images}
-                width={220}
-                style={{ borderRadius: "10px", cursor: "pointer" }}
-                height={350}
-                className={`${
-                  isZoom
-                    ? "scale-150 transition-all duration-500 ease-in-out absolute bottom-8 w-[700px] h-[500px] object-cover left-1/2 -translate-x-1/2 rounded-lg"
-                    : "transition-all duration-700 ease-out rounded-lg"
-                }`}
-                onClick={() => setIsZoom(!isZoom)}
-              />
-            )}
-          </div>
-
-          <label className="w-3/5">
-            <FileUpload setPict={setPict} width="full" />
-          </label>
-
-          {/* anggota rapat */}
-          <label className="w-3/5">
-            <div className="flex gap-2 w-full justify-center items-center ">
+        {isShowData == true ? (
+          <form
+            className="mt-7 w-full flex justify-between gap-5 flex-col h-[37.5rem] px-7 rounded-lg shadow-lg py-7 overflow-y-scroll  items-center"
+            onSubmit={handleSubmitUpdate}
+          >
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Waktu</p>
               <input
-                type="text"
-                id="anggota"
-                name="anggota"
-                value={isShowData ? showData.anggota : formEdit.anggota}
+                type="date"
+                name="waktu"
+                value={isShowData ? showData.waktu : formEdit.waktu}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
                 onChange={handleChange}
-                className="p-2 border rounded w-full"
                 disabled={isShowData}
               />
-              <Button variant="primary" onClick={handleAddPerson}>
-                <Image src={add} width={20} height={20} alt="add" />
-              </Button>
+            </label>
+
+            {/* lokasi */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Lokasi</p>
+              <input
+                type="text"
+                name="lokasi"
+                value={isShowData ? showData.lokasi : formEdit.lokasi}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* unit divisi */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Unit / Divisi</p>
+              <input
+                type="text"
+                name="divisi"
+                value={isShowData ? showData.divisi : formEdit.divisi}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled
+              />
+            </label>
+
+            {/* pembahasan masalah */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Pembahasan Masalah</p>
+              <input
+                type="text"
+                name="pembahasan"
+                value={isShowData ? showData.pembahasan : formEdit.pembahasan}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled
+              />
+            </label>
+
+            {/* editor */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Tindak Lanjut</p>
+              <Editor
+                value={text}
+                style={{ height: "200px", pointerEvents: "none" }}
+                className="mt-2 opacity-75"
+              />
+            </label>
+
+            {/* link / url */}
+            <label className="w-3/5 relative">
+              <p className="text-slate-700 font-semibold">Link / URL</p>
+              <input
+                type="url"
+                name="link"
+                value={isShowData ? showData.link : formEdit.link}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+              <Image
+                src={linkImg}
+                width={20}
+                height={20}
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => window.open(`${formEdit.link}`, "blank")}
+              />
+            </label>
+
+            {/* tampilan gambar */}
+            <div className={`flex w-3/5 justify-between`}>
+              {images && (
+                <Image
+                  alt="gambar"
+                  src={images}
+                  width={220}
+                  style={{ borderRadius: "10px", cursor: "pointer" }}
+                  height={350}
+                  className={`${
+                    isZoom
+                      ? "scale-150 transition-all duration-500 ease-in-out absolute bottom-8 w-[700px] h-[500px] object-cover left-1/2 -translate-x-1/2 rounded-lg"
+                      : "transition-all duration-700 ease-out rounded-lg"
+                  }`}
+                  onClick={() => setIsZoom(!isZoom)}
+                />
+              )}
             </div>
 
-            {newNotulen.map((InputNotulen) => (
-              <div
-                className="flex w-full justify-center items-center gap-2 mt-3"
-                key={InputNotulen.id}
-              >
+            <label className="w-3/5">
+              <FileUpload setPict={setPict} disabled={true} width="full" />
+            </label>
+
+            {/* pimpinan */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Pimpinan</p>
+              <input
+                type="text"
+                name="pimpinan"
+                value={isShowData ? showData.pimpinan : formEdit.pimpinan}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* notulen */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Notulen</p>
+              <input
+                type="text"
+                name="pimpinan"
+                value={isShowData ? showData.notulen : formEdit.notulen}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* anggota rapat */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold mb-3">Anggota Rapat</p>
+              <div className="flex gap-2 w-full justify-center items-center ">
                 <input
                   type="text"
-                  id="anggota_baru"
-                  name={`anggota_baru_${InputNotulen.id}`}
+                  id="anggota"
+                  name="anggota"
+                  value={isShowData ? showData.anggota : formEdit.anggota}
+                  onChange={handleChange}
                   className="p-2 border rounded w-full"
                   disabled={isShowData}
                 />
-                <Button
-                  variant="delete"
-                  onClick={() => handleDeletePerson(InputNotulen.id)}
-                >
-                  <Image src={deleted} width={20} height={20} alt="add" />
+                <Button variant="primary" onClick={handleAddPerson}>
+                  <Image src={add} width={20} height={20} alt="add" />
                 </Button>
               </div>
-            ))}
-          </label>
 
-          <Button variant="main-btn" title="edit" type="submit">
-            Simpan
-          </Button>
-        </form>
+              {newNotulen.map((InputNotulen) => (
+                <div
+                  className="flex w-full justify-center items-center gap-2 mt-3"
+                  key={InputNotulen.id}
+                >
+                  <input
+                    type="text"
+                    id="anggota_baru"
+                    name={`anggota_baru_${InputNotulen.id}`}
+                    className="p-2 border rounded w-full"
+                    disabled={isShowData}
+                  />
+                  <Button
+                    variant="delete"
+                    onClick={() => handleDeletePerson(InputNotulen.id)}
+                  >
+                    <Image src={deleted} width={20} height={20} alt="add" />
+                  </Button>
+                </div>
+              ))}
+            </label>
+          </form>
+        ) : (
+          <form
+            className="mt-7 w-full flex justify-between gap-5 flex-col h-[37.5rem] px-7 rounded-lg shadow-lg py-7 overflow-y-scroll  items-center"
+            onSubmit={handleSubmitUpdate}
+          >
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Waktu</p>
+              <input
+                type="date"
+                name="waktu"
+                value={isShowData ? showData.waktu : formEdit.waktu}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* lokasi */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Lokasi</p>
+              <input
+                type="text"
+                name="lokasi"
+                value={isShowData ? showData.lokasi : formEdit.lokasi}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* unit divisi */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Unit / Divisi</p>
+              <input
+                type="text"
+                name="divisi"
+                value={isShowData ? showData.divisi : formEdit.divisi}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled
+              />
+            </label>
+
+            {/* pembahasan masalah */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Pembahasan Masalah</p>
+              <input
+                type="text"
+                name="pembahasan"
+                value={isShowData ? showData.pembahasan : formEdit.pembahasan}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled
+              />
+            </label>
+
+            {/* editor */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Tindak Lanjut</p>
+              <Editor
+                ref={editorQ}
+                value={text}
+                onTextChange={(e) => setText(e.htmlValue)}
+                style={{ height: "200px" }}
+                className="mt-2"
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* link / url */}
+            <label className="w-3/5 relative">
+              <p className="text-slate-700 font-semibold">Link / URL</p>
+              <input
+                type="url"
+                name="link"
+                value={isShowData ? showData.link : formEdit.link}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+              <Image
+                src={linkImg}
+                width={20}
+                height={20}
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => window.open(`${formEdit.link}`, "blank")}
+              />
+            </label>
+
+            {/* tampilan gambar */}
+            <div className={`flex w-3/5 justify-between`}>
+              {images && (
+                <Image
+                  alt="gambar"
+                  src={images}
+                  width={220}
+                  style={{ borderRadius: "10px", cursor: "pointer" }}
+                  height={350}
+                  className={`${
+                    isZoom
+                      ? "scale-150 transition-all duration-500 ease-in-out absolute bottom-8 w-[700px] h-[500px] object-cover left-1/2 -translate-x-1/2 rounded-lg"
+                      : "transition-all duration-700 ease-out rounded-lg"
+                  }`}
+                  onClick={() => setIsZoom(!isZoom)}
+                />
+              )}
+            </div>
+
+            <label className="w-3/5">
+              <FileUpload setPict={setPict} width="full" />
+            </label>
+
+            {/* pimpinan */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Pimpinan</p>
+              <input
+                type="text"
+                name="pimpinan"
+                value={isShowData ? showData.pimpinan : formEdit.pimpinan}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* notulen */}
+            <label className="w-3/5">
+              <p className="text-slate-700 font-semibold">Notulen</p>
+              <input
+                type="text"
+                name="notulen"
+                value={isShowData ? showData.notulen : formEdit.notulen}
+                className="border p-2 rounded-md w-full mt-2 text-slate-700 font-medium"
+                onChange={handleChange}
+                disabled={isShowData}
+              />
+            </label>
+
+            {/* anggota rapat */}
+            <label className="w-3/5">
+              <div className="flex gap-2 w-full justify-center items-center ">
+                <input
+                  type="text"
+                  id="anggota"
+                  name="anggota"
+                  value={isShowData ? showData.anggota : formEdit.anggota}
+                  onChange={handleChange}
+                  className="p-2 border rounded w-full"
+                  disabled={isShowData}
+                />
+                <Button variant="primary" onClick={handleAddPerson}>
+                  <Image src={add} width={20} height={20} alt="add" />
+                </Button>
+              </div>
+
+              {newNotulen.map((InputNotulen) => (
+                <div
+                  className="flex w-full justify-center items-center gap-2 mt-3"
+                  key={InputNotulen.id}
+                >
+                  <input
+                    type="text"
+                    id="anggota_baru"
+                    name={`anggota_baru_${InputNotulen.id}`}
+                    className="p-2 border rounded w-full"
+                    disabled={isShowData}
+                  />
+                  <Button
+                    variant="delete"
+                    onClick={() => handleDeletePerson(InputNotulen.id)}
+                  >
+                    <Image src={deleted} width={20} height={20} alt="add" />
+                  </Button>
+                </div>
+              ))}
+            </label>
+
+            <Button variant="main-btn" title="edit" type="submit">
+              Simpan
+            </Button>
+          </form>
+        )}
       </div>
     </section>
   );

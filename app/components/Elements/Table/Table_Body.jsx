@@ -10,7 +10,7 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
     <tbody className="relative">
       {data.length > 0 ? (
         paginatedData().map((data) => (
-          <tr key={data?.no}>
+          <tr key={data?.no} className="border-b">
             <td className="pt-2 border-b-2 pb-4 w-28 text-sm text-center">
               {data.no}
             </td>
@@ -59,8 +59,8 @@ const TableBody = ({ handleDelete, handleEdit, paginatedData }) => {
           </tr>
         ))
       ) : (
-        <tr className="absolute  top-3 left-5">
-          <td className="font-semibold opacity-50">Data Belum Ditemukan!</td>
+        <tr>
+          <td className="font-semibold opacity-50 p-2">Data Belum Ditemukan!</td>
         </tr>
       )}
     </tbody>
