@@ -60,46 +60,48 @@ const TableNotulency = ({
         </tr>
       </thead>
       <tbody>
-        {dataRiwayat.map((data, i) => (
-          <tr className="border-b-2 pb-2" key={i}>
-            <td className="w-24 p-3 text-center text-slate-600">
-              {i === 0 ? 1 : i + 1}
-            </td>
-            <td className="w-24 p-3 text-center text-slate-600">
-              {data.waktu} / 10:00
-            </td>
-            <td className="w-24 p-3 text-center text-slate-600">
-              {data.lokasi}
-            </td>
-            <td className="w-24 p-3 text-center text-slate-600">
-              {data.divisi}
-            </td>
-            <td className="w-24 p-3 text-center text-slate-600">
-              {data.pembahasan}
-            </td>
-            <td className="w-24 p-3 flex items-center justify-center mx-auto">
-              {dataRiwayat[lastIndex] == data ? (
-                <Image
-                  src={editBlack}
-                  width={35}
-                  height={35}
-                  alt="show"
-                  className="cursor-pointer"
-                  onClick={() => handleEditData(data.no)}
-                />
-              ) : (
-                <Image
-                  src={showBlack}
-                  width={35}
-                  height={35}
-                  alt="show"
-                  className="cursor-pointer"
-                  onClick={() => handleShowData(data.no)}
-                />
-              )}
-            </td>
-          </tr>
-        ))}
+        {console.info(hystory)}
+        {dataRiwayat &&
+          hystory.map((data, i) => (
+            <tr className="border-b-2 pb-2" key={i}>
+              <td className="w-24 p-3 text-center text-slate-600">
+                {i === 0 ? 1 : i + 1}
+              </td>
+              <td className="w-24 p-3 text-center text-slate-600">
+                {data.waktu} / 10:00
+              </td>
+              <td className="w-24 p-3 text-center text-slate-600">
+                {data.lokasi}
+              </td>
+              <td className="w-24 p-3 text-center text-slate-600">
+                {data.divisi}
+              </td>
+              <td className="w-24 p-3 text-center text-slate-600">
+                {data.pembahasan}
+              </td>
+              <td className="w-24 p-3 flex items-center justify-center mx-auto">
+                {hystory[lastIndex] == data ? (
+                  <Image
+                    src={editBlack}
+                    width={35}
+                    height={35}
+                    alt="show"
+                    className="cursor-pointer"
+                    onClick={() => handleEditData(data.no)}
+                  />
+                ) : (
+                  <Image
+                    src={showBlack}
+                    width={35}
+                    height={35}
+                    alt="show"
+                    className="cursor-pointer"
+                    onClick={() => handleShowData(data.no)}
+                  />
+                )}
+              </td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );
@@ -313,14 +315,7 @@ const UpdateNotulency = ({ params }) => {
 
     setDataForPrint(newData);
     updateDataNotulen(newData);
-
-    dataNotulen.map((data) => {
-      if (data.no == id) {
-        editDataRiwayat(newData);
-      } else {
-        editDataRiwayat(dataNotulen);
-      }
-    });
+    editDataRiwayat(newData);
 
     setHistory([
       ...history_data,

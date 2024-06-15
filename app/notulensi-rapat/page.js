@@ -21,7 +21,11 @@ const NotulencyMeeting = () => {
   let itemPerPage = 5;
 
   const handleEdit = (data) => {
-    router.push(`/notulensi-rapat/${data.no}`);
+    endpoint.map((specificData) => {
+      if (specificData.no == data.no) {
+        router.push(`/notulensi-rapat/${data.no}`);
+      }
+    });
   };
 
   const handleDelete = (formdata) => {

@@ -29,7 +29,7 @@ const SpanTitle = ({ title }) => {
 
 // main components
 const AddNotulency = () => {
-  const router = useRouter()
+  const router = useRouter();
   const data = useFormDataStore((state) => state.data);
   const addData = useFormDataStore((state) => state.addData);
   const [formData, setFormData] = useState([]);
@@ -72,13 +72,13 @@ const AddNotulency = () => {
       pimpinan: e.target.pimpinan_notulen.value,
       notulen: e.target.notulen.value,
       anggota: datas,
-    }; 
+    };
 
     setFormData([...formData, dataNotulen]);
     addData(dataNotulen);
     setTimeout(() => {
-      router.push('/notulensi-rapat')
-    setIsLoading(false);
+      router.push("/notulensi-rapat");
+      setIsLoading(false);
     }, 800);
 
     e.target.reset();

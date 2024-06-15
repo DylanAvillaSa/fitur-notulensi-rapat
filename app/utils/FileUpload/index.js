@@ -5,10 +5,21 @@ import { useDropzone } from "react-dropzone";
 
 const FileUpload = ({ setPict, width }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [notFormat, setNotFormat] = useState(false);
+  const typeFiles = [".png", ".jpg"];
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
-      setUploadedFiles(acceptedFiles);
-      setPict(acceptedFiles);
+      const [png, jpg] = typeFiles;
+      if (
+        acceptedFiles[0].path.includes(png) ||
+        acceptedFiles[0].path.includes(jpg)
+      ) {
+        setUploadedFiles(acceptedFiles);
+        setPict(acceptedFiles);
+        setNotFormat(false);
+      } else {
+        setNotFormat(true);
+      }
     },
   });
   return (
@@ -24,7 +35,14 @@ const FileUpload = ({ setPict, width }) => {
       <ul>
         {uploadedFiles.map((file) => (
           <li key={file.name} className="text-light-purple">
-            Name File : {file.name}
+            {notFormat ? (
+              <p className="text-rose-400 flex flex-col font-medium items-center">
+                Format Tidak Sesuai{" "}
+                <span className="font-medium">Format : png, Jpg </span>
+              </p>
+            ) : (
+              <p>Nama Gambar : {file.name}</p>
+            )}
           </li>
         ))}
       </ul>
